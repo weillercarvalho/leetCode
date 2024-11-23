@@ -3,10 +3,15 @@
  * @return {boolean}
  */
 var isValid = function (s) {
-    while (s.includes("{}") || s.includes("()") || s.includes("[]")) {
-        s = s.replace("{}", "").trim();
-        s = s.replace("()", "").trim();
-        s = s.replace("[]", "").trim();
+    const stack = [];
+    const map = { ")": "(", "}": "{", "]": "[" };
+
+    for (let char of s) {
+        if (char in map) {
+            if (stack.pop() !== map[char]) return false;
+        } else {
+            stack.push(char);
+        }
     }
-    return s === ""; // Retorna true se a string estiver vazia
+    return stack.length === 0;
 };
